@@ -33,13 +33,17 @@ confusion[2,2] / sum(confusion[,2])
 coef(loan_log)
 colMeans(my_data[,2:4])
 # 1
-exp(-13.17783285 + 0.05979075*73.774200 + 0.58707882*2.396400 + 0.16267911*1.937938 + #What to do for education levels??)
+exp(-13.17783285 + 0.05979075*73.774200 + 0.58707882*2.396400 + 0.16267911*1.937938 + 3.91060897)/(1+exp(-13.17783285 + 0.05979075*73.774200 + 0.58707882*2.396400 + 0.16267911*1.937938 + 3.91060897))
 
 # 2
-xvalues <- data.frame(Loan = 73.774200, Family = 2.396400, CCAvg = 1.937938, )
+xvalues <- data.frame(Income = 73.774200, Family = 2.396400, CCAvg = 1.937938, Education = "2" )
 predict(loan_log, newdata = xvalues, type="response")
 
 # 7. Compare coefficients from linear and log models
 cbind(coef(loan_linear), coef(loan_log))
 
 # 8. calculate partial effects
+xb <- predict(loan_log,newdata = xvalues)
+PE_log <- dlogis(xb)*coef(loan_log)[-1]
+PE_lin <- coef(loan_linear)[-1]
+cbind(PE_lin, PE_log)
